@@ -10,21 +10,21 @@ describe 'Merchants API' do
 
     merchants = JSON.parse(response.body)
 
-    expect(merchants.count).to eq(3)
+    expect(merchants["data"].count).to eq(3)
   end
 
   it 'finds based on given params' do
     create(:merchant, name: 'bob')
     create(:merchant, name: 'joe')
-    create(:merchant, name: 'steve')
+    steve = create(:merchant, name: 'steve')
 
     get '/api/v1/merchants/find?name=steve'
 
     expect(response).to be_successful
 
-    merchant = JSON.parse(response.body)
+    merchant = JSON.parse(response.body)["data"]
 
-    expect(merchant["name"]).to eq("steve")
+    expect(merchant["id"].to_i).to eq(steve.id)
   end
 
   it 'finds all based on given params' do
